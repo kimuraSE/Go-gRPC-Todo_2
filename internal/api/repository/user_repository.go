@@ -8,9 +8,9 @@ import (
 	"google.golang.org/grpc"
 )
 
-
 type IUserRepository interface {
-	CreateUser(req model.UserRequest) (string,error)
+	CreateUser(req model.UserRequest) (string, error)
+	LoginUser(req model.UserRequest) (string, error)
 }
 
 type userRepository struct {
@@ -20,9 +20,9 @@ func NewUserRepository() IUserRepository {
 	return &userRepository{}
 }
 
-func (ur *userRepository) CreateUser(req model.UserRequest) (string,error) {
-	
-	conn,err := grpc.Dial("localhost:50051", grpc.WithInsecure())
+func (ur *userRepository) CreateUser(req model.UserRequest) (string, error) {
+
+	conn, err := grpc.Dial("localhost:50051", grpc.WithInsecure())
 	if err != nil {
 		return "", err
 	}
@@ -30,14 +30,34 @@ func (ur *userRepository) CreateUser(req model.UserRequest) (string,error) {
 
 	client := user.NewUserServiceClient(conn)
 
-	res,err := client.RegisterUser(context.Background(), &user.RegisterRequest{
-		Name: req.Name,
-		Email: req.Email,
+	res, err := client.RegisterUser(context.Background(), &user.RegisterRequest{
+		Name:     req.Name,
+		Email:    req.Email,
 		Password: req.Password,
-		})
+	})
 	if err != nil {
 		return "", err
 	}
 
+	return res.Token, nil
+}
+
+func (ur *userRepository) LoginUser(req model.UserRequest) (string, error) {
+
+	conn, err := grpc.Dial("localhost:50051", grpc.WithInsecure())
+	if err != nil {
+		return "", err
+	}
+	defer conn.Close()
+
+	client := user.NewUserServiceClient(conn)
+
+	res, err := client.LoginUser(context.Background(), &user.LoginRequest{
+		Email:    req.Email,
+		Password: req.Password,
+	})
+	if err != nil {
+		return "", err
+	}
 	return res.Token, nil
 }

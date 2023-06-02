@@ -3,12 +3,12 @@ package usecase
 import (
 	"Go-REST-Todo/internal/api/model"
 	"Go-REST-Todo/internal/api/repository"
-
-	bycrypt "golang.org/x/crypto/bcrypt"
+	// bycrypt "golang.org/x/crypto/bcrypt"
 )
 
 type IUserUsecase interface {
-	SignUp(user model.UserRequest) (string, error)
+	SignUp(req model.UserRequest) (string, error)
+	Login(model.UserRequest) (string, error)
 }
 
 type userUsecase struct {
@@ -19,22 +19,32 @@ func NewUserUsecase(ur repository.IUserRepository) IUserUsecase {
 	return &userUsecase{ur}
 }
 
-func (uu *userUsecase) SignUp(u model.UserRequest) (string, error) {
-
-	hash,err := bycrypt.GenerateFromPassword([]byte(u.Password), 10)
-	if err != nil {
-		return "", err
-	}
+func (uu *userUsecase) SignUp(req model.UserRequest) (string, error) {
 
 	newUser := model.UserRequest{
-		Name: u.Name,
-		Email: u.Email,
-		Password: string(hash),
+		Name:     req.Name,
+		Email:    req.Email,
+		Password: req.Password,
 	}
 
-	res,err :=uu.ur.CreateUser(newUser)
+	res, err := uu.ur.CreateUser(newUser)
 	if err != nil {
 		return "", err
 	}
+	return res, nil
+}
+
+func (uu *userUsecase) Login(req model.UserRequest) (string, error) {
+
+	newUser := model.UserRequest{
+		Email:    req.Email,
+		Password: req.Password,
+	}
+
+	res, err := uu.ur.LoginUser(newUser)
+	if err != nil {
+		return "", err
+	}
+
 	return res, nil
 }
