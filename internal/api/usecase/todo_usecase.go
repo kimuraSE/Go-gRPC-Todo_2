@@ -6,7 +6,7 @@ import (
 )
 
 type ITodoUsecase interface {
-	CreateTodo(req model.TodoRequest) (model.TodoResponse, error)
+	CreateTodo(req model.Todo) (model.TodoResponse, error)
 }
 
 type todoUsecase struct {
@@ -17,10 +17,11 @@ func NewTodoUsecase(tr repository.ITodoRepository) ITodoUsecase {
 	return &todoUsecase{tr}
 }
 
-func (tu *todoUsecase) CreateTodo(req model.TodoRequest) (model.TodoResponse, error) {
+func (tu *todoUsecase) CreateTodo(req model.Todo) (model.TodoResponse, error) {
 
-	newTodo := model.TodoRequest{
+	newTodo := model.Todo{
 		Title: req.Title,
+		UserID: req.UserID,
 	}
 
 	res, err := tu.tr.CreateTodo(newTodo)

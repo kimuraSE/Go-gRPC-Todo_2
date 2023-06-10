@@ -1,13 +1,12 @@
 package model
 
-type TodoRequest struct {
+type Todo struct {
 	ID     uint   `json:"id"`
 	Title  string `json:"title"`
-	UserId uint   `json:"user_id"`
+	UserID uint   `json:"user_id"`
 }
 
 type TodoResponse struct {
 	ID    uint   `json:"id"`
-	Title string `json:"title"`
-	UserId uint   `json:"user_id"` 
+	Title string `json:"title"` 
 }

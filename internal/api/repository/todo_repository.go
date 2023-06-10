@@ -9,7 +9,7 @@ import (
 )
 
 type ITodoRepository interface {
-	CreateTodo(req model.TodoRequest) (model.TodoResponse, error)
+	CreateTodo(req model.Todo) (model.TodoResponse, error)
 }
 
 type todoRepository struct {
@@ -19,7 +19,7 @@ func NewTodoRepository() ITodoRepository {
 	return &todoRepository{}
 }
 
-func (tr *todoRepository) CreateTodo(req model.TodoRequest) (model.TodoResponse, error) {
+func (tr *todoRepository) CreateTodo(req model.Todo) (model.TodoResponse, error) {
 
 	conn, err := grpc.Dial("localhost:50051", grpc.WithInsecure())
 	if err != nil {
@@ -31,7 +31,7 @@ func (tr *todoRepository) CreateTodo(req model.TodoRequest) (model.TodoResponse,
 
 	res, err := client.Create(context.Background(), &todo.Todo{
 		Title: req.Title,
-		UserId: uint32(req.UserId),
+		UserId: uint32(req.UserID),
 	})
 
 	if err != nil {

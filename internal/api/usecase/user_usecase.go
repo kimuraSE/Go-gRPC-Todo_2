@@ -3,7 +3,6 @@ package usecase
 import (
 	"Go-REST-Todo/internal/api/model"
 	"Go-REST-Todo/internal/api/repository"
-	// bycrypt "golang.org/x/crypto/bcrypt"
 )
 
 type IUserUsecase interface {
