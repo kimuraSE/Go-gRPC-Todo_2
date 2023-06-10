@@ -25,6 +25,6 @@ func main() {
 	todoUsecase := usecase.NewTodoUsecase(todoRepository)
 	todoController := controller.NewTodoController(todoUsecase)
 
-	routes := routes.NewRoutes(userController,todoController)
+	routes := routes.NewRoutes(userController, todoController)
 	routes.Logger.Fatal(routes.Start(":8080"))
 }

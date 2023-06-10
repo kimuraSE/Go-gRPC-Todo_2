@@ -44,22 +44,21 @@ func (tc *todoController) Create(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}
 
-
 	return c.JSON(http.StatusOK, res)
 
 }
 
 func (tc *todoController) Read(c echo.Context) error {
-	
+
 	user := c.Get("user").(*jwt.Token)
 	claims := user.Claims.(jwt.MapClaims)
 	userID := claims["user_id"].(float64)
-	
+
 	id := c.Param("id")
-	todoId,_:= strconv.Atoi(id)
+	todoId, _ := strconv.Atoi(id)
 
 	newTodo := model.Todo{
-		ID: uint(todoId),
+		ID:     uint(todoId),
 		UserID: uint(userID),
 	}
 
@@ -92,13 +91,13 @@ func (tc *todoController) ReadAll(c echo.Context) error {
 }
 
 func (tc *todoController) Update(c echo.Context) error {
-	
+
 	user := c.Get("user").(*jwt.Token)
 	claims := user.Claims.(jwt.MapClaims)
 	userID := claims["user_id"].(float64)
 
 	id := c.Param("id")
-	todoId,_:= strconv.Atoi(id)
+	todoId, _ := strconv.Atoi(id)
 
 	newTodo := model.Todo{}
 
@@ -119,20 +118,20 @@ func (tc *todoController) Update(c echo.Context) error {
 }
 
 func (tc *todoController) Delete(c echo.Context) error {
-	
+
 	user := c.Get("user").(*jwt.Token)
 	claims := user.Claims.(jwt.MapClaims)
 	userID := claims["user_id"].(float64)
 
 	id := c.Param("id")
-	todoId,_:= strconv.Atoi(id)
+	todoId, _ := strconv.Atoi(id)
 
 	newTodo := model.Todo{
-		ID: uint(todoId),
+		ID:     uint(todoId),
 		UserID: uint(userID),
 	}
 
-	res, err := tc.tu.DeleteTodo (newTodo)
+	res, err := tc.tu.DeleteTodo(newTodo)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err.Error())
 	}

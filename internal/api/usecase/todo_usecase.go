@@ -24,7 +24,7 @@ func NewTodoUsecase(tr repository.ITodoRepository) ITodoUsecase {
 func (tu *todoUsecase) CreateTodo(req model.Todo) (model.TodoResponse, error) {
 
 	newTodo := model.Todo{
-		Title: req.Title,
+		Title:  req.Title,
 		UserID: req.UserID,
 	}
 
@@ -37,10 +37,10 @@ func (tu *todoUsecase) CreateTodo(req model.Todo) (model.TodoResponse, error) {
 
 }
 
-func (tu *todoUsecase) ReadTodo (req model.Todo) (model.TodoResponse, error) {
-	
+func (tu *todoUsecase) ReadTodo(req model.Todo) (model.TodoResponse, error) {
+
 	newTodo := model.Todo{
-		ID: req.ID,
+		ID:     req.ID,
 		UserID: req.UserID,
 	}
 
@@ -53,8 +53,8 @@ func (tu *todoUsecase) ReadTodo (req model.Todo) (model.TodoResponse, error) {
 
 }
 
-func (tu *todoUsecase) GetAllTodoList (req model.Todo) ([]model.TodoResponse, error) {
-	
+func (tu *todoUsecase) GetAllTodoList(req model.Todo) ([]model.TodoResponse, error) {
+
 	newTodo := model.Todo{
 		UserID: req.UserID,
 	}
@@ -68,15 +68,15 @@ func (tu *todoUsecase) GetAllTodoList (req model.Todo) ([]model.TodoResponse, er
 
 }
 
-func (tu *todoUsecase) UpdateTodo (req model.Todo) (model.TodoResponse, error) {
+func (tu *todoUsecase) UpdateTodo(req model.Todo) (model.TodoResponse, error) {
 
 	newTodo := model.Todo{
-		ID: req.ID,
-		Title: req.Title,
+		ID:     req.ID,
+		Title:  req.Title,
 		UserID: req.UserID,
 	}
 
-	res, err := tu.tr.UpdateTodo (newTodo)
+	res, err := tu.tr.UpdateTodo(newTodo)
 	if err != nil {
 		return model.TodoResponse{}, err
 	}
@@ -85,14 +85,14 @@ func (tu *todoUsecase) UpdateTodo (req model.Todo) (model.TodoResponse, error) {
 
 }
 
-func (tu *todoUsecase) DeleteTodo (req model.Todo) (model.Message, error) {
-	
+func (tu *todoUsecase) DeleteTodo(req model.Todo) (model.Message, error) {
+
 	newTodo := model.Todo{
-		ID: req.ID,
+		ID:     req.ID,
 		UserID: req.UserID,
 	}
 
-	res, err := tu.tr.DeleteTodo (newTodo)
+	res, err := tu.tr.DeleteTodo(newTodo)
 	if err != nil {
 		return model.Message{}, err
 	}
