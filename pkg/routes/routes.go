@@ -21,6 +21,10 @@ func NewRoutes(uc controller.IUserController,tc controller.ITodoController) *ech
 	}))
 
 	todo.POST("", tc.Create)
+	todo.GET("/:id", tc.Read)
+	todo.GET("", tc.ReadAll)
+	todo.PUT("/:id", tc.Update)
+	todo.DELETE("/:id", tc.Delete)
 
 	return e
 }
