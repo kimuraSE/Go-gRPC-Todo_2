@@ -8,10 +8,9 @@ type Todo struct {
 
 type TodoResponse struct {
 	ID    uint   `json:"id"`
-	Title string `json:"title"` 
+	Title string `json:"title"`
 }
 
 type Message struct {
 	Message string `json:"message"`
 }
-

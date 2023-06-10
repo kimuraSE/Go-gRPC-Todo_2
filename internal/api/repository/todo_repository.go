@@ -13,7 +13,7 @@ type ITodoRepository interface {
 	ReadTodo(req model.Todo) (model.TodoResponse, error)
 	GetAllTodos(req model.Todo) ([]model.TodoResponse, error)
 	UpdateTodo(req model.Todo) (model.TodoResponse, error)
-	DeleteTodo(req model.Todo)(model.Message,error)
+	DeleteTodo(req model.Todo) (model.Message, error)
 }
 
 type todoRepository struct {
@@ -34,7 +34,7 @@ func (tr *todoRepository) CreateTodo(req model.Todo) (model.TodoResponse, error)
 	client := todo.NewTodoServiceClient(conn)
 
 	res, err := client.Create(context.Background(), &todo.Todo{
-		Title: req.Title,
+		Title:  req.Title,
 		UserId: uint32(req.UserID),
 	})
 
@@ -76,7 +76,7 @@ func (tr *todoRepository) ReadTodo(req model.Todo) (model.TodoResponse, error) {
 }
 
 func (tr *todoRepository) GetAllTodos(req model.Todo) ([]model.TodoResponse, error) {
-	
+
 	conn, err := grpc.Dial("localhost:50051", grpc.WithInsecure())
 	if err != nil {
 		return []model.TodoResponse{}, err
@@ -106,8 +106,8 @@ func (tr *todoRepository) GetAllTodos(req model.Todo) ([]model.TodoResponse, err
 
 }
 
-func (tr *todoRepository) UpdateTodo (req model.Todo) (model.TodoResponse, error) {
-	
+func (tr *todoRepository) UpdateTodo(req model.Todo) (model.TodoResponse, error) {
+
 	conn, err := grpc.Dial("localhost:50051", grpc.WithInsecure())
 	if err != nil {
 		return model.TodoResponse{}, err
@@ -118,7 +118,7 @@ func (tr *todoRepository) UpdateTodo (req model.Todo) (model.TodoResponse, error
 
 	res, err := client.Update(context.Background(), &todo.UpdateTodoRequest{
 		TodoId: uint32(req.ID),
-		Title: req.Title,
+		Title:  req.Title,
 		UserId: uint32(req.UserID),
 	})
 
@@ -133,8 +133,8 @@ func (tr *todoRepository) UpdateTodo (req model.Todo) (model.TodoResponse, error
 
 }
 
-func (tr *todoRepository) DeleteTodo (req model.Todo) (model.Message, error) {
-	
+func (tr *todoRepository) DeleteTodo(req model.Todo) (model.Message, error) {
+
 	conn, err := grpc.Dial("localhost:50051", grpc.WithInsecure())
 	if err != nil {
 		return model.Message{}, err
