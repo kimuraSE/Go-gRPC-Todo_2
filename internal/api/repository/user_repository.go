@@ -6,6 +6,7 @@ import (
 	"context"
 
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/metadata"
 )
 
 type IUserRepository interface {
@@ -29,8 +30,10 @@ func (ur *userRepository) CreateUser(req model.UserRequest) (string, error) {
 	defer conn.Close()
 
 	client := user.NewUserServiceClient(conn)
+	md := metadata.New(map[string]string{"authorization": "Bearer test"})
+	ctx := metadata.NewOutgoingContext(context.Background(), md)
 
-	res, err := client.RegisterUser(context.Background(), &user.RegisterRequest{
+	res, err := client.RegisterUser(ctx, &user.RegisterRequest{
 		Name:     req.Name,
 		Email:    req.Email,
 		Password: req.Password,
@@ -51,8 +54,10 @@ func (ur *userRepository) LoginUser(req model.UserRequest) (string, error) {
 	defer conn.Close()
 
 	client := user.NewUserServiceClient(conn)
+	md := metadata.New(map[string]string{"authorization": "Bearer test"})
+	ctx := metadata.NewOutgoingContext(context.Background(), md)
 
-	res, err := client.LoginUser(context.Background(), &user.LoginRequest{
+	res, err := client.LoginUser(ctx, &user.LoginRequest{
 		Email:    req.Email,
 		Password: req.Password,
 	})

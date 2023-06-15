@@ -6,6 +6,7 @@ import (
 	"context"
 
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/metadata"
 )
 
 type ITodoRepository interface {
@@ -32,8 +33,9 @@ func (tr *todoRepository) CreateTodo(req model.Todo) (model.TodoResponse, error)
 	defer conn.Close()
 
 	client := todo.NewTodoServiceClient(conn)
-
-	res, err := client.Create(context.Background(), &todo.Todo{
+	md := metadata.New(map[string]string{"authorization": "Bearer test"})
+	ctx := metadata.NewOutgoingContext(context.Background(), md)
+	res, err := client.Create(ctx, &todo.Todo{
 		Title:  req.Title,
 		UserId: uint32(req.UserID),
 	})
@@ -58,8 +60,10 @@ func (tr *todoRepository) ReadTodo(req model.Todo) (model.TodoResponse, error) {
 	defer conn.Close()
 
 	client := todo.NewTodoServiceClient(conn)
+	md := metadata.New(map[string]string{"authorization": "Bearer test"})
+	ctx := metadata.NewOutgoingContext(context.Background(), md)
 
-	res, err := client.Read(context.Background(), &todo.ReadRequest{
+	res, err := client.Read(ctx, &todo.ReadRequest{
 		UserId: uint32(req.UserID),
 		TodoId: uint32(req.ID),
 	})
@@ -84,8 +88,10 @@ func (tr *todoRepository) GetAllTodos(req model.Todo) ([]model.TodoResponse, err
 	defer conn.Close()
 
 	client := todo.NewTodoServiceClient(conn)
+	md := metadata.New(map[string]string{"authorization": "Bearer test"})
+	ctx := metadata.NewOutgoingContext(context.Background(), md)
 
-	res, err := client.GetAllTodoList(context.Background(), &todo.TodoListRequest{
+	res, err := client.GetAllTodoList(ctx, &todo.TodoListRequest{
 		UserId: uint32(req.UserID),
 	})
 
@@ -116,7 +122,9 @@ func (tr *todoRepository) UpdateTodo(req model.Todo) (model.TodoResponse, error)
 
 	client := todo.NewTodoServiceClient(conn)
 
-	res, err := client.Update(context.Background(), &todo.UpdateTodoRequest{
+	md := metadata.New(map[string]string{"authorization": "Bearer test"})
+	ctx := metadata.NewOutgoingContext(context.Background(), md)
+	res, err := client.Update(ctx, &todo.UpdateTodoRequest{
 		TodoId: uint32(req.ID),
 		Title:  req.Title,
 		UserId: uint32(req.UserID),
@@ -143,7 +151,9 @@ func (tr *todoRepository) DeleteTodo(req model.Todo) (model.Message, error) {
 
 	client := todo.NewTodoServiceClient(conn)
 
-	res, err := client.Delete(context.Background(), &todo.DeleteTodoRequest{
+	md := metadata.New(map[string]string{"authorization": "Bearer test"})
+	ctx := metadata.NewOutgoingContext(context.Background(), md)
+	res, err := client.Delete(ctx, &todo.DeleteTodoRequest{
 		TodoId: uint32(req.ID),
 		UserId: uint32(req.UserID),
 	})

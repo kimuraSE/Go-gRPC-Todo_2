@@ -2,11 +2,11 @@ package routes
 
 import (
 	"Go-REST-Todo/internal/api/controller"
-	"net/http"
-	"os"
 	echojwt "github.com/labstack/echo-jwt/v4"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	"net/http"
+	"os"
 )
 
 func NewRoutes(uc controller.IUserController, tc controller.ITodoController) *echo.Echo {
